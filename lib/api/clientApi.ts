@@ -89,9 +89,13 @@ export const logoutUser = async (): Promise<void> => {
     await nextServer.post(endPoint);
 }
 
+interface updMessage {
+    message: string,
+}
+
 //Оновлення профілю
-export const UpdateUserProfile = async (userData: UpdateUser): Promise<User> =>  {
+export const UpdateUserProfile = async (userData: UpdateUser): Promise<User | updMessage> =>  {
     const endPoint = '/users/me';
-    const response = await nextServer.patch<User>(endPoint, userData);
+    const response = await nextServer.patch<User | updMessage>(endPoint, userData);
     return response.data;
 }
