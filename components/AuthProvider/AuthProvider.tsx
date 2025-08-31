@@ -1,7 +1,10 @@
 'use client';
 
-import { getSessionServer, getUserProfileServer } from './lib/api/serverApi';
-import { useUserAuthStore } from './lib/store/authStore';
+import {
+  getSessionServer,
+  getUserProfileServer,
+} from '../../lib/api/serverApi';
+import { useUserAuthStore } from '../../lib/store/authStore';
 import { useEffect } from 'react';
 
 interface AuthProviderProps {
