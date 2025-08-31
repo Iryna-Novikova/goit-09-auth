@@ -64,6 +64,15 @@ export const getUserProfile= async (): Promise<User> => {
     return response.data;
 }
 
+//Перевірка сессії користувача 
+export const getSession = async() => {
+    const endPoint =`/auth/session`
+    
+    const response = await nextServer.get(endPoint);
+        
+    return response.data;
+}
+
 //Аутентицікація користувача
 export const loginUser = async (userData: LoginRequest): Promise<User> => {
     const endPoint = '/auth/login';

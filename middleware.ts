@@ -1,8 +1,8 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { getSessionServer } from "./lib/api/serverApi";
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { parse } from "cookie";
+import { getSessionServer } from "./lib/api/serverApi";
 
 const privateRoutes = ['/profile', '/notes'];
 const publicRoutes = ['/sign-in', '/sign-up'];

@@ -1,9 +1,6 @@
 'use client';
 
-import {
-  getSessionServer,
-  getUserProfileServer,
-} from '../../lib/api/serverApi';
+import { getSession, getUserProfile } from '../../lib/api/clientApi';
 import { useUserAuthStore } from '../../lib/store/authStore';
 import { useEffect } from 'react';
 
