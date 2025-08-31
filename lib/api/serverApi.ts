@@ -14,7 +14,13 @@ export const fetchNotesServer = async (query: string, page: number, tag?:NoteTag
         perPage: 12,
     }
 
-    const response = await nextServer.get<NotesHttpResponse>(endPoint, { params});
+    const cookiesStore = await cookies();
+
+    const response = await nextServer.get<NotesHttpResponse>(endPoint, { params, headers: {
+      Cookie: cookiesStore.toString(),
+    },
+    },
+    );
     
     return response.data;
 }
@@ -23,7 +29,12 @@ export const fetchNotesServer = async (query: string, page: number, tag?:NoteTag
 export const fetchNoteByIDServer = async (id: string): Promise<Note> => {
     const endPoint = `/notes/${id}`;
 
-    const response = await nextServer.get<Note>(endPoint);
+    const cookiesStore = await cookies();
+
+    const response = await nextServer.get<Note>(endPoint, { headers: {
+      Cookie: cookiesStore.toString(),
+    },
+    },);
         
     return response.data;
 }
@@ -31,7 +42,7 @@ export const fetchNoteByIDServer = async (id: string): Promise<Note> => {
 //Отримати профіль користувача
 export const getUserProfileServer = async (): Promise<User> => {
     const endPoint = `/users/me`;
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
 
     const response = await nextServer.get<User>(endPoint, { headers: { Cookie: cookieStore.toString(), }, });
         
@@ -41,7 +52,7 @@ export const getUserProfileServer = async (): Promise<User> => {
 //Перевірка сессії користувача 
 export const getSessionServer = async() => {
     const endPoint =`/auth/session`
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     
     const response = await nextServer.get(endPoint, { headers: { Cookie: cookieStore.toString(), }, });
         
