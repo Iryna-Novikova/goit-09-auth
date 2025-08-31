@@ -35,33 +35,41 @@ export default function ProfileEditPage() {
   }, [user, setUser]);
 
   const handleSubmit = async (formData: FormData) => {
-    const newName = formData.get('username') as string;
+    // const newName = formData.get('username') as string;
+    // const userCng: UpdateUser = {
+    //   username: newName.trim() ? newName.trim() : '',
+    //     };
 
-    if (newName.trim() === '') {
-      setError('Input not NULL name please.');
-      return;
-    }
+    // if (newName.trim() === '') {
+    //   setError('Input not NULL name please.');
+    //   return;
+    // };
+
+    // if (newName !== user?.username) {
+    //   const userCng: UpdateUser = {
+    //       username: newName,
+    //     };
+    // }
 
     setIsLoading(true);
 
     try {
-      // const userCng: UpdateUser = {
-      //   name: formData.get('username') as string,
-      //   email: formData.get('email') as string,
-      // };
+      const userCng: UpdateUser = {
+        username: formData.get('username') as string,
+        // email: formData.get('email') as string,
+      };
 
-      if (user && newName !== user.username) {
-        const userCng: UpdateUser = {
-          email: user.email,
-          username: newName,
-        };
+      // if (user && newName !== user.username) {
+      //   const userCng: UpdateUser = {
+      //     email: user.email,
+      //     username: newName,
+      //   };
 
-        // console.log(`userCng: `);
+      // console.log(`userCng: `);
 
-        const updUser = await updateUserProfile(userCng);
-        setUser(updUser);
-        router.push('/profile');
-      }
+      const updUser = await updateUserProfile(userCng);
+      setUser(updUser);
+      router.push('/profile');
     } catch (error) {
       setError(
         // (error as ApiError).response?.data?.error ??

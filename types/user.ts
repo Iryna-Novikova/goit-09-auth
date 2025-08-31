@@ -10,6 +10,6 @@ export interface LoginRequest {
 }
 
 export interface UpdateUser {
-   email: string,
+   email?: string,
    username: string;
 }
