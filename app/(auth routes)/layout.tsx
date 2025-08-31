@@ -5,7 +5,7 @@ interface AuthNavigationProps {
 }
 
 const AuthNavigationLayout = ({ children }: AuthNavigationProps) => {
-  return <section>{children}</section>;
+  return <>{children}</>;
 };
 
 export default AuthNavigationLayout;
