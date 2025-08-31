@@ -13,6 +13,11 @@ export default function TagsMenu() {
     'Personal',
     'Meeting',
     'Shopping',
+    'Ideas',
+    'Travel',
+    'Finance',
+    'Health',
+    'Important',
   ];
 
   return (
