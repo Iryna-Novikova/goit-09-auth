@@ -14,9 +14,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     const fetchSession = async () => {
-      const response = await getSessionServer();
+      const response = await getSession();
       if (response) {
-        const user = await getUserProfileServer();
+        const user = await getUserProfile();
         setAuht(user);
       } else {
         clearIsAuth();
