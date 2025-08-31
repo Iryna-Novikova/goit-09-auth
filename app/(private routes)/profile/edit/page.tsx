@@ -54,7 +54,7 @@ export default function ProfileEditPage() {
       }
 
       console.log(`user: ${user}`);
-      console.log(`user: ${userCng}`);
+      // console.log(`user: ${userCng}`);
       console.log(formData);
 
       if (user && newName !== user.username) {
