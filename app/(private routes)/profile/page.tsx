@@ -37,7 +37,8 @@ const Profile = async () => {
         </div>
         <div className={css.avatarWrapper}>
           <Image
-            src={user.avatar || '/default-avatar.svg'}
+            // src={user.avatar || '/default-avatar.svg'}
+            src={user.avatar}
             alt="User Avatar"
             width={120}
             height={120}
