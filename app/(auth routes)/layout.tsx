@@ -1,3 +1,5 @@
+'use client';
+
 interface AuthNavigationProps {
   children: React.ReactNode;
 }
