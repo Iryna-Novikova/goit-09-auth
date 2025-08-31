@@ -12,6 +12,7 @@ export const fetchNotesServer = async (query: string, page: number, tag?:NoteTag
         tag,
         page,
         perPage: 12,
+        sortBy:'created',
     }
 
     const cookiesStore = await cookies();
