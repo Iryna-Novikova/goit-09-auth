@@ -43,7 +43,9 @@ export default function ProfileEditPage() {
         email: formData.get('email') as string,
       };
 
-      console.log(userCng);
+      console.log(`user: ${user}`);
+      console.log(`user: ${userCng}`);
+      console.log(formData);
 
       if (userCng && user && userCng.name !== user.username) {
         const updUser = await UpdateUserProfile(userCng);
