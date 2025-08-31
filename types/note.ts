@@ -1,4 +1,4 @@
-export type NoteTagType = 'Work' | 'Todo' | 'Personal' | 'Meeting' | 'Shopping';
+export type NoteTagType = 'Work' | 'Personal' | 'Meeting' | 'Shopping' | 'Ideas' | 'Travel' | 'Finance' | 'Health' | 'Important' | 'Todo';
 
 export interface Note {
     id: string; 
@@ -13,4 +13,9 @@ export interface NewNote {
     title: string;
     content: string;
     tag: NoteTagType;
+}
+
+export interface NotesHttpResponse {
+    notes: Note[];
+    totalPages: number;
 }

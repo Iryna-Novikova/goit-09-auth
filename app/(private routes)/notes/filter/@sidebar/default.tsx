@@ -9,6 +9,11 @@ const SideBarNotes = () => {
     'Personal',
     'Meeting',
     'Shopping',
+    'Ideas',
+    'Travel',
+    'Finance',
+    'Health',
+    'Important',
   ];
 
   return (

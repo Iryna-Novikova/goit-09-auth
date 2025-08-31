@@ -1,8 +1,8 @@
 import css from './NotesPage.module.css';
-import { fetchNotes } from '@/lib/api';
 import NotesPageClient from './Notes.client';
 import { NoteTagType } from '@/types/note';
 import { Metadata } from 'next';
+import { fetchNotesServer } from '@/lib/api/serverApi';
 
 type NoteCategory = NoteTagType | 'All';
 
@@ -39,7 +39,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
   const tag = slug[0] === 'All' ? undefined : slug[0];
 
-  const data = await fetchNotes('', 1, tag);
+  const data = await fetchNotesServer('', 1, tag);
   return (
     <div className={css.app}>
       <NotesPageClient initialData={data} tag={tag} />

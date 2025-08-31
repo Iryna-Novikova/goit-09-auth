@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import css from './NotesPage.module.css';
 import NoteList from '@/components/NoteList/NoteList';
-import { fetchNotes, NotesHttpResponse } from '@/lib/api';
+import { fetchNotes } from '@/lib/api/clientApi';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import { useDebouncedCallback } from 'use-debounce';
-import { NoteTagType } from '@/types/note';
+import { NotesHttpResponse, NoteTagType } from '@/types/note';
 import Link from 'next/link';
 
 interface NotesPageClientProps {
