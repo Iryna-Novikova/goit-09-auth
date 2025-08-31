@@ -4,7 +4,7 @@ import css from './SignInPage.module.css';
 import { useState } from 'react';
 import { LoginRequest } from '@/types/user';
 import { loginUser } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+// import { ApiError } from '@/app/api/api';
 import { useRouter } from 'next/navigation';
 import { useUserAuthStore } from '@/lib/store/authStore';
 
@@ -29,9 +29,10 @@ export default function SignInPage() {
       }
     } catch (error) {
       setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Something went wrong. Try again.'
+        // (error as ApiError).response?.data?.error ??
+        //   (error as ApiError).message ??
+        `Something went wrong. Try again.
+        ERR: ${error}`
       );
     }
   };

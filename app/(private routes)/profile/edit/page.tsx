@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
 import { useUserAuthStore } from '@/lib/store/authStore';
 import { getUserProfile, UpdateUserProfile } from '@/lib/api/clientApi';
 import { UpdateUser, User } from '@/types/user';
-import { ApiError } from '@/app/api/api';
+// import { ApiError } from '@/app/api/api';
 import Loading from '@/app/loading';
 
 export default function ProfileEditPage() {
@@ -49,9 +49,10 @@ export default function ProfileEditPage() {
       }
     } catch (error) {
       setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Something went wrong. Try again.'
+        // (error as ApiError).response?.data?.error ??
+        //   (error as ApiError).message ??
+        `Something went wrong. Try again.
+          ERR: ${error}`
       );
     } finally {
       setIsLoading(false);

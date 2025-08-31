@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { nextServer } from './lib/api/api';
 import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { parse } from "cookie";
 import { getSessionServer } from "./lib/api/serverApi";
@@ -13,76 +14,81 @@ export async function middleware(request: NextRequest) {
     const refreshToken = cookiesStoreData.get('refreshToken')?.value;
     
     const { pathname } = request.nextUrl;
-    const isPrivateRoute = privateRoutes.includes(pathname);
-    const isPublicRoute = publicRoutes.includes(pathname);
+  const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
+  // privateRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
+    // publicRoutes.includes(pathname);
 
-    if (isPrivateRoute) {
-        const response = await getSessionServer();
-        const responseCookies = response.headers['set-cookie'];
+  if (isPrivateRoute) {
+    if (!accessToken) {
+      if (refreshToken) {
+        // Отримуємо нові cookie
+        const data = await getSessionServer();
+        const setCookie = data.headers['set-cookie'];
 
-        if (responseCookies) {
-            const arr = Array.isArray(responseCookies) ? responseCookies : [responseCookies];
-            for (const cookieEl of arr) {
-                if (cookieEl) {
-                    const parsed = parse(cookieEl); 
-                    const options: Partial<ResponseCookie> = {
-                        maxAge: Number(parsed['Max-Age']),
-                        path: parsed.Path,
-                        expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-                    };
+        if (setCookie) {
+          const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
 
-                    if (parsed.accessToken) {
-                        cookiesStoreData.set('accessToken', parsed.accessToken, options)
-                    }
-                    
-                    if (parsed.refreshToken) {
-                        cookiesStoreData.set('refreshToken', parsed.refreshToken, options) 
-                    } 
-                }
-                return NextResponse.next({
-                    headers: {
-                        Cookie: cookiesStoreData.toString(),
-                    }
-                })
-            }
-        }
-
-        return NextResponse.redirect(new URL('/login',request.nextUrl.origin))
-    }
-
-    if (isPublicRoute) {
-        if (accessToken) {
-            return NextResponse.redirect(new URL('/',request.nextUrl.origin))
-        };
-
-        if (refreshToken) {
-            const response = await getSessionServer();
-            const responseCookies = response.headers['set-cookie'];
-
-            if (responseCookies) {
-                const arr = Array.isArray(responseCookies) ? responseCookies : [responseCookies];
-                for (const cookieEL of arr) {
-          if (cookieEL) {
-            const parsed = parse(cookieEL)
-            const options: Partial<ResponseCookie> = {
-              maxAge: Number(parsed['Max-Age']),
-              path: parsed.Path,
+          for (const cookieStr of cookieArray) {
+            const parsed = parse(cookieStr);
+            const options = {
               expires: parsed.Expires ? new Date(parsed.Expires) : undefined,
-            }
-            if (parsed.accessToken) {
-              cookiesStoreData.set('accessToken', parsed.accessToken, options)
-            }
-            if (parsed.refreshToken) {
-              cookiesStoreData.set('refreshToken', parsed.refreshToken, options)
-            }
+              path: parsed.Path,
+              maxAge: Number(parsed['Max-Age']),
+            };
+
+            if (parsed.accessToken) cookiesStoreData.set('accessToken', parsed.accessToken, options);
+            if (parsed.refreshToken) cookiesStoreData.set('refreshToken', parsed.refreshToken, options);
           }
-          return NextResponse.redirect(new URL('/', request.nextUrl.origin))
+
+          // Якщо сесія все ще активна:
+          // для публічного маршруту — виконуємо редірект на головну.
+          if (isPublicRoute) {
+            return NextResponse.redirect(new URL('/', request.url), {
+              headers: {
+                Cookie: cookieStore.toString(),
+              },
+            });
+          }
+
+          //  для приватного маршруту — дозволяємо доступ
+          // ередаємо нові cookie далі, щоб оновити їх у браузері
+          if (isPrivateRoute) {
+            return NextResponse.next({
+              headers: {
+                Cookie: cookieStore.toString(),
+              },
+            });
+          }
         }
       }
-      return NextResponse.next()
+
+      // Якщо refreshToken або сесії немає:
+      // публічний маршрут — дозволяємо доступ
+      if (isPublicRoute) {
+        return NextResponse.next();
+      }
+
+      // приватний маршрут — редірект на сторінку входу
+      if (isPrivateRoute) {
+        return NextResponse.redirect(new URL('/sign-in', request.url));
+      }
     }
-    return NextResponse.next()
+  
+
+    // Якщо accessToken існує:
+    // публічний маршрут — виконуємо редірект на головну
+    if (isPublicRoute) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+    
+
+    // приватний маршрут — дозволяємо доступ
+    if (isPrivateRoute) {
+      return NextResponse.next();
+    }
   }
+
 }
 
 export const config = { matcher: ['/profile/:path*', '/login', '/register', '/notes/:path*'] }

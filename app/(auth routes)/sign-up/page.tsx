@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { LoginRequest } from '@/types/user';
 import { useUserAuthStore } from '@/lib/store/authStore';
 import { registerUser } from '@/lib/api/clientApi';
-import { ApiError } from '@/app/api/api';
+// import { ApiError } from '@/app/api/api';
 
 export default function SignUpPage() {
   const [error, setError] = useState('');
@@ -30,9 +30,10 @@ export default function SignUpPage() {
       }
     } catch (error) {
       setError(
-        (error as ApiError).response?.data?.error ??
-          (error as ApiError).message ??
-          'Something went wrong. Try again.'
+        // (error as ApiError).response?.data?.error ??
+        //   (error as ApiError).message ??
+        `Something went wrong. Try again.
+        ERR: ${error}`
       );
     }
   };

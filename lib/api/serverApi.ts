@@ -57,5 +57,5 @@ export const getSessionServer = async() => {
     
     const response = await nextServer.get(endPoint, { headers: { Cookie: cookieStore.toString(), }, });
         
-    return response.data;
+    return response;
 }
