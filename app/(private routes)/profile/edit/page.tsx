@@ -28,7 +28,7 @@ export default function ProfileEditPage() {
           setUser(data);
           setUserName(data.username);
         })
-        .catch(error => setError(error));
+        .catch(error => setError(error.message));
     } else {
       setUserName(user.username);
     }
@@ -56,7 +56,6 @@ export default function ProfileEditPage() {
     try {
       const userCng: UpdateUser = {
         username: formData.get('username') as string,
-        // email: formData.get('email') as string,
       };
 
       // if (user && newName !== user.username) {
@@ -107,6 +106,7 @@ export default function ProfileEditPage() {
               type="text"
               className={css.input}
               value={userName}
+              name="username"
               onChange={ev => setUserName(ev.target.value)}
             />
           </div>
