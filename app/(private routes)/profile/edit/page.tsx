@@ -41,17 +41,28 @@ export default function ProfileEditPage() {
     setIsLoading(true);
 
     try {
-      const userCng: UpdateUser = {
-        name: formData.get('username') as string,
-        email: formData.get('email') as string,
-      };
+      // const userCng: UpdateUser = {
+      //   name: formData.get('username') as string,
+      //   email: formData.get('email') as string,
+      // };
+
+      const newName = formData.get('username') as string;
+
+      if (!newName.trim()) {
+        setError('Input not NULL name please.');
+        return;
+      }
 
       console.log(`user: ${user}`);
       console.log(`user: ${userCng}`);
       console.log(formData);
 
-      if (userCng && user && userCng.name !== user.username) {
-        const updUser = await UpdateUserProfile(userCng);
+      if (user && newName !== user.username) {
+        // const userCng: UpdateUser = {
+        //   email: user.email,
+        //   username,
+        // };
+        const updUser = await UpdateUserProfile({ username: newName });
         setUser(updUser);
         router.push('/profile');
       }
