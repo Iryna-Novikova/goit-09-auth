@@ -40,6 +40,7 @@ export default function ProfileEditPage() {
     try {
       const userCng: UpdateUser = {
         name: formData.get('username') as string,
+        email: formData.get('email') as string,
       };
 
       if (user && userCng.name !== user.username) {
@@ -62,6 +63,7 @@ export default function ProfileEditPage() {
   return (
     <main className={css.mainContent}>
       {isLoading && <Loading />}
+      {error && <p className={css.error}>{error}</p>}
 
       <div className={css.profileCard}>
         <h1 className={css.formTitle}>Edit Profile</h1>
@@ -102,7 +104,6 @@ export default function ProfileEditPage() {
           </div>
         </form>
       </div>
-      {error && <p className={css.error}>{error}</p>}
     </main>
   );
 }
