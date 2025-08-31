@@ -55,13 +55,16 @@ export default function ProfileEditPage() {
 
       console.log(`user: ${user}`);
       // console.log(`user: ${userCng}`);
-      console.log(formData);
+      console.log(`newName: ${newName}`);
 
       if (user && newName !== user.username) {
         const userCng: UpdateUser = {
           email: user.email,
           username: newName,
         };
+
+        console.log(`userCng: `);
+
         const updUser = await UpdateUserProfile(userCng);
         setUser(updUser);
         router.push('/profile');

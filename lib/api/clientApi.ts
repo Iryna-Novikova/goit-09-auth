@@ -1,6 +1,6 @@
 import type { NewNote, Note, NotesHttpResponse, NoteTagType } from "@/types/note";
 import { nextServer } from "./api";
-import { LoginRequest, UpdateUser, User } from "@/types/user";
+import type { LoginRequest, UpdateUser, User } from "@/types/user";
 
 // отримати список нотаток
 export const fetchNotes = async (query: string, page: number, tag?:NoteTagType): Promise<NotesHttpResponse> => {
