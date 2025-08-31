@@ -17,6 +17,9 @@ export default function ProfileEditPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
+  console.log(userName);
+  console.log(user);
+
   const handleCancel = () => {
     router.back();
   };
