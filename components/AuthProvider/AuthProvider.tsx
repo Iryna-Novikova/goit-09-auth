@@ -9,7 +9,7 @@ interface AuthProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const setAuht = useUserAuthStore(state => state.setUser);
+  const setAuth = useUserAuthStore(state => state.setUser);
   const clearIsAuth = useUserAuthStore(state => state.clearIsAuthenticated);
 
   useEffect(() => {
@@ -17,13 +17,13 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       const response = await getSession();
       if (response) {
         const user = await getUserProfile();
-        setAuht(user);
+        setAuth(user);
       } else {
         clearIsAuth();
       }
     };
     fetchSession();
-  }, [setAuht, clearIsAuth]);
+  }, [setAuth, clearIsAuth]);
 
   return children;
 };

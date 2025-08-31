@@ -64,11 +64,15 @@ export const getUserProfile= async (): Promise<User> => {
     return response.data;
 }
 
+interface statusMsg {
+    message: string;
+}
+
 //Перевірка сессії користувача 
-export const getSession = async() => {
+export const getSession = async():Promise<statusMsg> => {
     const endPoint =`/auth/session`
     
-    const response = await nextServer.get(endPoint);
+    const response = await nextServer.get<statusMsg>(endPoint);
         
     return response.data;
 }
@@ -94,7 +98,7 @@ export const logoutUser = async (): Promise<void> => {
 // }
 
 //Оновлення профілю
-export const UpdateUserProfile = async (userData: UpdateUser): Promise<User> /*| updMessage>*/=>  {
+export const updateUserProfile = async (userData: UpdateUser): Promise<User> /*| updMessage>*/=>  {
     const endPoint = '/users/me';
     const response = await nextServer.patch<User>(endPoint, userData);
     return response.data;

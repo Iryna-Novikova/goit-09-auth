@@ -5,7 +5,7 @@ import css from './EditProfilePage.module.css';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useUserAuthStore } from '@/lib/store/authStore';
-import { getUserProfile, UpdateUserProfile } from '@/lib/api/clientApi';
+import { getUserProfile, updateUserProfile } from '@/lib/api/clientApi';
 import { UpdateUser, User } from '@/types/user';
 // import { ApiError } from '@/app/api/api';
 import Loading from '@/app/loading';
@@ -16,9 +16,6 @@ export default function ProfileEditPage() {
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
-
-  console.log(userName);
-  console.log(user);
 
   const handleCancel = () => {
     router.back();
@@ -38,6 +35,13 @@ export default function ProfileEditPage() {
   }, [user, setUser]);
 
   const handleSubmit = async (formData: FormData) => {
+    const newName = formData.get('username') as string;
+
+    if (newName.trim() === '') {
+      setError('Input not NULL name please.');
+      return;
+    }
+
     setIsLoading(true);
 
     try {
@@ -46,26 +50,15 @@ export default function ProfileEditPage() {
       //   email: formData.get('email') as string,
       // };
 
-      const newName = formData.get('username') as string;
-
-      if (newName.trim() === '') {
-        setError('Input not NULL name please.');
-        return;
-      }
-
-      console.log(`user: ${user}`);
-      // console.log(`user: ${userCng}`);
-      console.log(`newName: ${newName}`);
-
       if (user && newName !== user.username) {
         const userCng: UpdateUser = {
           email: user.email,
           username: newName,
         };
 
-        console.log(`userCng: `);
+        // console.log(`userCng: `);
 
-        const updUser = await UpdateUserProfile(userCng);
+        const updUser = await updateUserProfile(userCng);
         setUser(updUser);
         router.push('/profile');
       }
@@ -83,10 +76,11 @@ export default function ProfileEditPage() {
 
   return (
     <main className={css.mainContent}>
-      {isLoading && <Loading />}
-      {error && <p className={css.error}>{error}</p>}
-
       <div className={css.profileCard}>
+        {isLoading && <Loading />}
+
+        {error && <p className={css.error}>{error}</p>}
+
         <h1 className={css.formTitle}>Edit Profile</h1>
 
         <Image

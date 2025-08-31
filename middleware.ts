@@ -1,7 +1,5 @@
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
-import { nextServer } from './lib/api/api';
-import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { parse } from "cookie";
 import { getSessionServer } from "./lib/api/serverApi";
 
@@ -13,11 +11,10 @@ export async function middleware(request: NextRequest) {
     const accessToken = cookiesStoreData.get('accessToken')?.value;
     const refreshToken = cookiesStoreData.get('refreshToken')?.value;
     
-    const { pathname } = request.nextUrl;
+  const { pathname } = request.nextUrl;
+  
   const isPrivateRoute = privateRoutes.some((route) => pathname.startsWith(route));
-  // privateRoutes.includes(pathname);
   const isPublicRoute = publicRoutes.some((route) => pathname.startsWith(route));
-    // publicRoutes.includes(pathname);
 
   if (isPrivateRoute) {
     if (!accessToken) {
@@ -75,20 +72,17 @@ export async function middleware(request: NextRequest) {
       }
     }
   
-
     // Якщо accessToken існує:
     // публічний маршрут — виконуємо редірект на головну
     if (isPublicRoute) {
       return NextResponse.redirect(new URL('/', request.url));
     }
     
-
     // приватний маршрут — дозволяємо доступ
     if (isPrivateRoute) {
       return NextResponse.next();
     }
   }
-
 }
 
-export const config = { matcher: ['/profile/:path*', '/login', '/register', '/notes/:path*'] }
+export const config = { matcher: ['/profile/:path*', '/sign-in', '/sign-up', '/notes/:path*'] }
