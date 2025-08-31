@@ -48,7 +48,7 @@ export default function ProfileEditPage() {
 
       const newName = formData.get('username') as string;
 
-      if (!newName.trim()) {
+      if (newName.trim() === '') {
         setError('Input not NULL name please.');
         return;
       }
